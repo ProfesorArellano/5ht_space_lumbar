@@ -9,4 +9,5 @@ o	Ancho de la pelvis (AP), en centímetros. Debe ser medida a nivel del borde ma
 •	Se debe considerar también que la radiografía de columna lumbar lateral debe ser adquirida a una distancia foco-RI de 100 cm.
 •	Finalmente, se debe dar una angulación del RC para la adquisición de la radiografía de 5to espacio lateral según el resultado arrojado por la aplicación, centrando 4 cm bajo la cresta iliaca separada del RI.
 
-Papers: https://pubmed.ncbi.nlm.nih.gov/40840027/
+Papers:  https://acortar.link/q2venz
+
