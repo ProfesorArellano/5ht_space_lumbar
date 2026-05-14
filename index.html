@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0d1b2a" />
+  <meta name="description"
+    content="Calculadora de angulación del rayo central para el 5to espacio lumbar en radiología." />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="5to Lumbar" />
+  <title>5to Espacio Lumbar</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0d1b2a;
+      --surface: #1a2e45;
+      --surface2: #1f3a56;
+      --accent: #00c8ff;
+      --accent2: #0077ff;
+      --text: #e8f4fd;
+      --text-muted: #7fa8c9;
+      --danger: #ff4d6d;
+      --success: #00e5a0;
+      --warn: #ffb347;
+      --radius: 16px;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 0 40px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, #0a1628 0%, #1a3a5c 100%);
+      padding: 20px 20px 28px;
+      text-align: center;
+      position: relative;
+      border-bottom: 1px solid rgba(0, 200, 255, 0.15);
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      border-radius: 2px;
+    }
+
+    .header-icon {
+      font-size: 2.4rem;
+      margin-bottom: 6px;
+      filter: drop-shadow(0 0 12px rgba(0, 200, 255, 0.5));
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--accent), #a0e9ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 0.3px;
+    }
+
+    header p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 300;
+    }
+
+    .menu-btn {
+      position: absolute;
+      top: 18px;
+      right: 16px;
+      background: rgba(0, 200, 255, 0.1);
+      border: 1px solid rgba(0, 200, 255, 0.2);
+      color: var(--accent);
+      border-radius: 10px;
+      padding: 6px 10px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .menu-btn:hover {
+      background: rgba(0, 200, 255, 0.2);
+    }
+
+    /* ── MAIN CARD ── */
+    main {
+      width: 100%;
+      max-width: 480px;
+      padding: 20px 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid rgba(0, 200, 255, 0.1);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .card-title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(0, 200, 255, 0.15);
+    }
+
+    /* ── INPUTS ── */
+    .field {
+      margin-bottom: 18px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      font-weight: 400;
+      line-height: 1.4;
+    }
+
+    label span.unit {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.78rem;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      background: var(--surface2);
+      border: 1.5px solid rgba(0, 200, 255, 0.15);
+      border-radius: 12px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      padding: 14px 50px 14px 18px;
+      outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s;
+      -moz-appearance: textfield;
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+    }
+
+    input[type="number"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0, 200, 255, 0.12);
+    }
+
+    input[type="number"].invalid {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(255, 77, 109, 0.15);
+    }
+
+    .input-suffix {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      pointer-events: none;
+    }
+
+    /* ── BUTTONS ── */
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    button {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      border-radius: 14px;
+      padding: 16px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, opacity 0.2s;
+      letter-spacing: 0.3px;
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    .btn-calc {
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(0, 119, 255, 0.35);
+    }
+
+    .btn-calc:hover {
+      box-shadow: 0 6px 24px rgba(0, 200, 255, 0.45);
+    }
+
+    .btn-calc:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .btn-clear {
+      background: rgba(255, 77, 109, 0.12);
+      color: var(--danger);
+      border: 1.5px solid rgba(255, 77, 109, 0.25);
+    }
+
+    .btn-clear:hover {
+      background: rgba(255, 77, 109, 0.2);
+    }
+
+    /* ── RESULTADO ── */
+    .result-card {
+      background: linear-gradient(135deg, #0a2240, #143355);
+      border: 1.5px solid rgba(0, 200, 255, 0.25);
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      text-align: center;
+      min-height: 110px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 30px rgba(0, 200, 255, 0.08);
+      transition: all 0.4s ease;
+    }
+
+    .result-card.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .result-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .result-text {
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    .result-text.craneal {
+      color: #7dd3fc;
+    }
+
+    .result-text.caudal {
+      color: var(--warn);
+    }
+
+    .result-text.perp {
+      color: var(--success);
+    }
+
+    .result-icon {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    /* ── PLACEHOLDER ── */
+    .placeholder {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      padding: 10px;
+      opacity: 0.7;
+    }
+
+    .placeholder span {
+      display: block;
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+    }
+
+    /* ── MODAL ── */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid rgba(0, 200, 255, 0.2);
+      border-radius: 20px;
+      padding: 28px 24px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal p,
+    .modal li {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    .modal ul {
+      padding-left: 18px;
+      margin-top: 8px;
+    }
+
+    .modal li {
+      margin-bottom: 6px;
+    }
+
+    .modal-close {
+      width: 100%;
+      margin-top: 20px;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      color: #fff;
+      padding: 14px;
+      border-radius: 12px;
+    }
+
+    .contact-line {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 8px;
+      line-height: 1.7;
+    }
+
+    .contact-line a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 0.72rem;
+      color: rgba(127, 168, 201, 0.5);
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="header-icon">🦴</div>
+    <h1>5to Espacio Lumbar</h1>
+    <p>Calculadora de angulación del rayo central</p>
+    <button class="menu-btn" onclick="openModal('menu')" aria-label="Menú">☰</button>
+  </header>
+
+  <main>
+    <!-- FORMULARIO -->
+    <div class="card">
+      <div class="card-title">📐 Parámetros</div>
+
+      <div class="field">
+        <label for="dci">Distancia entre crestas iliacas en la imagen radiográfica <span
+            class="unit">(cm)</span></label>
+        <div class="input-wrap">
+          <input type="number" id="dci" inputmode="decimal" min="0" step="any" placeholder="0" />
+          <span class="input-suffix">cm</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="ap">Ancho de la pelvis <span class="unit">(cm)</span></label>
+        <div class="input-wrap">
+          <input type="number" id="ap" inputmode="decimal" min="0" step="any" placeholder="0" />
+          <span class="input-suffix">cm</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="dmri">Distancia entre la mesa y el receptor de imagen <span class="unit">(cm)</span></label>
+        <div class="input-wrap">
+          <input type="number" id="dmri" inputmode="decimal" min="0" step="any" placeholder="0" />
+          <span class="input-suffix">cm</span>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-clear" onclick="borrar()">🗑 Borrar</button>
+        <button class="btn-calc" id="btnCalc" onclick="calcular()">⚡ Calcular</button>
+      </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="card result-card" id="resultCard">
+      <div class="placeholder" id="placeholder">
+        <span>📊</span>
+        Ingresa los valores y presiona Calcular
+      </div>
+      <div id="resultContent" style="display:none; text-align:center;">
+        <div class="result-icon" id="resultIcon"></div>
+        <div class="result-label">Resultado</div>
+        <div class="result-text" id="resultText"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer>v1.0 · Radiología UV · 2026</footer>
+
+  <!-- MODAL MENÚ -->
+  <div class="overlay" id="overlayMenu">
+    <div class="modal">
+      <h2>☰ Menú</h2>
+      <button onclick="openModal('instruc')"
+        style="width:100%;background:var(--surface2);color:var(--text);border:1px solid rgba(0,200,255,0.15);border-radius:12px;padding:14px;margin-bottom:10px;text-align:left;font-size:0.95rem;">📋
+        Instrucciones</button>
+      <button onclick="openModal('contacto')"
+        style="width:100%;background:var(--surface2);color:var(--text);border:1px solid rgba(0,200,255,0.15);border-radius:12px;padding:14px;text-align:left;font-size:0.95rem;">📧
+        Contacto</button>
+      <button class="modal-close" onclick="closeModal('menu')">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- MODAL INSTRUCCIONES -->
+  <div class="overlay" id="overlayInstruc">
+    <div class="modal">
+      <h2>📋 Instrucciones</h2>
+      <p>Esta aplicación calcula la angulación óptima del rayo central para proyecciones del <strong
+          style="color:var(--text)">5to espacio lumbar (L5-S1)</strong>.</p>
+      <ul>
+        <li>Ingresa la <strong style="color:var(--text)">distancia entre crestas iliacas</strong> medida en la imagen
+          radiográfica (cm).</li>
+        <li>Ingresa el <strong style="color:var(--text)">ancho de la pelvis</strong> del paciente (cm).</li>
+        <li>Ingresa la <strong style="color:var(--text)">distancia entre la mesa y el receptor</strong> de imagen (cm).
+        </li>
+        <li>Presiona <strong style="color:var(--accent)">Calcular</strong> para obtener la angulación recomendada.</li>
+      </ul>
+      <p style="margin-top:12px;font-size:0.8rem;">⚠️ Si la suma del ancho de pelvis + distancia mesa-receptor es 100,
+        ajuste los valores.</p>
+      <button class="modal-close" onclick="closeModal('instruc')">Entendido</button>
+    </div>
+  </div>
+
+  <!-- MODAL CONTACTO -->
+  <div class="overlay" id="overlayContacto">
+    <div class="modal">
+      <h2>📧 Contacto</h2>
+      <p>Cualquier consulta o duda comunicarse con:</p>
+      <div class="contact-line" style="margin-top:14px;">
+        <a href="mailto:Claudio.Cuellar@uv.cl">Claudio.Cuellar@uv.cl</a><br />
+        <a href="mailto:Cristian.Arellano@uv.cl">Cristian.Arellano@uv.cl</a>
+      </div>
+      <button class="modal-close" onclick="closeModal('contacto')">Cerrar</button>
+    </div>
+  </div>
+
+  <script>
+    // ── Modales ──
+    function openModal(id) {
+      document.getElementById('overlayMenu').classList.remove('show');
+      document.getElementById('overlay' + id.charAt(0).toUpperCase() + id.slice(1)).classList.add('show');
+    }
+    function closeModal(id) {
+      document.getElementById('overlay' + id.charAt(0).toUpperCase() + id.slice(1)).classList.remove('show');
+    }
+    document.querySelectorAll('.overlay').forEach(el => {
+      el.addEventListener('click', e => { if (e.target === el) el.classList.remove('show'); });
+    });
+
+    // ── Lógica de cálculo ──
+    function calcular() {
+      const dciVal = document.getElementById('dci').value.trim();
+      const apVal = document.getElementById('ap').value.trim();
+      const dmriVal = document.getElementById('dmri').value.trim();
+
+      // Validar campos vacíos
+      let ok = true;
+      [['dci', dciVal], ['ap', apVal], ['dmri', dmriVal]].forEach(([id, v]) => {
+        const el = document.getElementById(id);
+        if (v === '' || isNaN(v)) { el.classList.add('invalid'); ok = false; }
+        else el.classList.remove('invalid');
+      });
+      if (!ok) { showAlert('⚠️ Todos los campos son obligatorios.'); return; }
+
+      const DCI = parseFloat(dciVal);
+      const AP = parseFloat(apVal);
+      const DMRI = parseFloat(dmriVal);
+
+      // Validación especial
+      if (Math.abs(AP + DMRI - 100) < 0.001) {
+        showAlert('⚠️ Modifique la distancia entre la mesa y el receptor.');
+        return;
+      }
+
+      // Cálculo
+      const x = (DCI * (100 - DMRI - AP / 2)) / 100;
+      const A1 = Math.round(Math.atan2(2 * x, AP) * 180 / Math.PI);
+      const A2 = Math.round(Math.atan2(4, 100 - DMRI - AP) * 180 / Math.PI);
+      const Af = Math.round(A2 + A1);
+
+      mostrarResultado(Af);
+      document.getElementById('btnCalc').disabled = true;
+    }
+
+    function mostrarResultado(Af) {
+      const placeholder = document.getElementById('placeholder');
+      const content = document.getElementById('resultContent');
+      const icon = document.getElementById('resultIcon');
+      const text = document.getElementById('resultText');
+
+      placeholder.style.display = 'none';
+      content.style.display = 'block';
+      text.className = 'result-text';
+
+      if (Af < -1) {
+        icon.textContent = '↑';
+        text.textContent = `La angulación del rayo central es de ${Math.abs(Af)}° a craneal`;
+        text.classList.add('craneal');
+      } else if (Af > 1) {
+        icon.textContent = '↓';
+        text.textContent = `La angulación del rayo central es de ${Af}° a caudal`;
+        text.classList.add('caudal');
+      } else {
+        icon.textContent = '✚';
+        text.textContent = 'Rayo central perpendicular';
+        text.classList.add('perp');
+      }
+    }
+
+    function borrar() {
+      ['dci', 'ap', 'dmri'].forEach(id => {
+        document.getElementById(id).value = '';
+        document.getElementById(id).classList.remove('invalid');
+      });
+      document.getElementById('placeholder').style.display = 'block';
+      document.getElementById('resultContent').style.display = 'none';
+      document.getElementById('btnCalc').disabled = false;
+    }
+
+    function showAlert(msg) {
+      // Alerta personalizada (sin window.alert feo)
+      const el = document.createElement('div');
+      el.style.cssText = `
+      position:fixed;bottom:30px;left:50%;transform:translateX(-50%);
+      background:#1f3a56;border:1.5px solid rgba(255,180,50,0.4);
+      color:#ffb347;border-radius:14px;padding:14px 22px;
+      font-family:Inter,sans-serif;font-size:0.9rem;font-weight:500;
+      box-shadow:0 8px 30px rgba(0,0,0,0.4);z-index:9999;
+      animation:fadeIn 0.3s ease;max-width:90vw;text-align:center;
+    `;
+      el.textContent = msg;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 3000);
+    }
+
+    // ── Service Worker ──
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(() => { });
+    }
+  </script>
+</body>
+
+</html>
