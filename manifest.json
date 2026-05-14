@@ -21,5 +21,14 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
+  ],
+  "id": "/5ht_space_lumbar/",
+  "screenshots": [
+    {
+      "src": "screenshot1.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
   ]
 }

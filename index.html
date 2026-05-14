@@ -113,6 +113,25 @@
       background: rgba(0, 200, 255, 0.2);
     }
 
+    .lang-btn {
+      position: absolute;
+      top: 18px;
+      left: 16px;
+      background: rgba(0, 200, 255, 0.1);
+      border: 1px solid rgba(0, 200, 255, 0.2);
+      color: var(--accent);
+      border-radius: 10px;
+      padding: 6px 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .lang-btn:hover {
+      background: rgba(0, 200, 255, 0.2);
+    }
+
     /* ── MAIN CARD ── */
     main {
       width: 100%;
@@ -437,19 +456,20 @@
 
   <header>
     <div class="header-icon">🦴</div>
-    <h1>5to Espacio Lumbar</h1>
-    <p>Calculadora de angulación del rayo central</p>
+    <h1 data-i18n="title">5to Espacio Lumbar</h1>
+    <p data-i18n="subtitle">Calculadora de angulación del rayo central</p>
+    <button class="lang-btn" onclick="toggleLang()" id="langToggle">EN</button>
     <button class="menu-btn" onclick="openModal('menu')" aria-label="Menú">☰</button>
   </header>
 
   <main>
     <!-- FORMULARIO -->
     <div class="card">
-      <div class="card-title">📐 Parámetros</div>
+      <div class="card-title" data-i18n="paramsTitle">📐 Parámetros</div>
 
       <div class="field">
-        <label for="dci">Distancia entre crestas iliacas en la imagen radiográfica <span
-            class="unit">(cm)</span></label>
+        <label for="dci"><span data-i18n="dciLabel">Distancia entre crestas iliacas en la imagen radiográfica</span>
+          <span class="unit">(cm)</span></label>
         <div class="input-wrap">
           <input type="number" id="dci" inputmode="decimal" min="0" step="any" placeholder="0" />
           <span class="input-suffix">cm</span>
@@ -457,7 +477,7 @@
       </div>
 
       <div class="field">
-        <label for="ap">Ancho de la pelvis <span class="unit">(cm)</span></label>
+        <label for="ap"><span data-i18n="apLabel">Ancho de la pelvis</span> <span class="unit">(cm)</span></label>
         <div class="input-wrap">
           <input type="number" id="ap" inputmode="decimal" min="0" step="any" placeholder="0" />
           <span class="input-suffix">cm</span>
@@ -465,7 +485,8 @@
       </div>
 
       <div class="field">
-        <label for="dmri">Distancia entre la mesa y el receptor de imagen <span class="unit">(cm)</span></label>
+        <label for="dmri"><span data-i18n="dmriLabel">Distancia entre la mesa y el receptor de imagen</span> <span
+            class="unit">(cm)</span></label>
         <div class="input-wrap">
           <input type="number" id="dmri" inputmode="decimal" min="0" step="any" placeholder="0" />
           <span class="input-suffix">cm</span>
@@ -473,8 +494,8 @@
       </div>
 
       <div class="btn-row">
-        <button class="btn-clear" onclick="borrar()">🗑 Borrar</button>
-        <button class="btn-calc" id="btnCalc" onclick="calcular()">⚡ Calcular</button>
+        <button class="btn-clear" onclick="borrar()"><span data-i18n="btnClear">🗑 Borrar</span></button>
+        <button class="btn-calc" id="btnCalc" onclick="calcular()"><span data-i18n="btnCalc">⚡ Calcular</span></button>
       </div>
     </div>
 
@@ -482,66 +503,175 @@
     <div class="card result-card" id="resultCard">
       <div class="placeholder" id="placeholder">
         <span>📊</span>
-        Ingresa los valores y presiona Calcular
+        <span data-i18n="resultPlaceholder">Ingresa los valores y presiona Calcular</span>
       </div>
       <div id="resultContent" style="display:none; text-align:center;">
         <div class="result-icon" id="resultIcon"></div>
-        <div class="result-label">Resultado</div>
+        <div class="result-label" data-i18n="resultLabel">Resultado</div>
         <div class="result-text" id="resultText"></div>
       </div>
     </div>
   </main>
 
-  <footer>v1.0 · Radiología UV · 2026</footer>
+  <footer data-i18n="footer">Escuela de Tecnología Médica · Universidad de Valparaíso</footer>
 
   <!-- MODAL MENÚ -->
   <div class="overlay" id="overlayMenu">
     <div class="modal">
-      <h2>☰ Menú</h2>
+      <h2 data-i18n="modalMenu">☰ Menú</h2>
       <button onclick="openModal('instruc')"
-        style="width:100%;background:var(--surface2);color:var(--text);border:1px solid rgba(0,200,255,0.15);border-radius:12px;padding:14px;margin-bottom:10px;text-align:left;font-size:0.95rem;">📋
-        Instrucciones</button>
+        style="width:100%;background:var(--surface2);color:var(--text);border:1px solid rgba(0,200,255,0.15);border-radius:12px;padding:14px;margin-bottom:10px;text-align:left;font-size:0.95rem;">
+        <span data-i18n="btnInstruc">📋 Instrucciones</span></button>
       <button onclick="openModal('contacto')"
-        style="width:100%;background:var(--surface2);color:var(--text);border:1px solid rgba(0,200,255,0.15);border-radius:12px;padding:14px;text-align:left;font-size:0.95rem;">📧
-        Contacto</button>
-      <button class="modal-close" onclick="closeModal('menu')">Cerrar</button>
+        style="width:100%;background:var(--surface2);color:var(--text);border:1px solid rgba(0,200,255,0.15);border-radius:12px;padding:14px;text-align:left;font-size:0.95rem;">
+        <span data-i18n="btnContact">📧 Contacto</span></button>
+      <button class="modal-close" onclick="closeModal('menu')" data-i18n="btnClose">Cerrar</button>
     </div>
   </div>
 
   <!-- MODAL INSTRUCCIONES -->
   <div class="overlay" id="overlayInstruc">
     <div class="modal">
-      <h2>📋 Instrucciones</h2>
-      <p>Esta aplicación calcula la angulación óptima del rayo central para proyecciones del <strong
-          style="color:var(--text)">5to espacio lumbar (L5-S1)</strong>.</p>
+      <h2 data-i18n="modalInstruc">📋 Instrucciones</h2>
+      <p data-i18n="instrucP1">Esta aplicación calcula la angulación óptima del rayo central para proyecciones del
+        <strong style="color:var(--text)">5to espacio lumbar (L5-S1)</strong>.</p>
       <ul>
-        <li>Ingresa la <strong style="color:var(--text)">distancia entre crestas iliacas</strong> medida en la imagen
-          radiográfica (cm).</li>
-        <li>Ingresa el <strong style="color:var(--text)">ancho de la pelvis</strong> del paciente (cm).</li>
-        <li>Ingresa la <strong style="color:var(--text)">distancia entre la mesa y el receptor</strong> de imagen (cm).
-        </li>
-        <li>Presiona <strong style="color:var(--accent)">Calcular</strong> para obtener la angulación recomendada.</li>
+        <li data-i18n="instrucL1">Ingresa la <strong style="color:var(--text)">distancia entre crestas iliacas</strong>
+          medida en la imagen radiográfica (cm).</li>
+        <li data-i18n="instrucL2">Ingresa el <strong style="color:var(--text)">ancho de la pelvis</strong> del paciente
+          (cm).</li>
+        <li data-i18n="instrucL3">Ingresa la <strong style="color:var(--text)">distancia entre la mesa y el
+            receptor</strong> de imagen (cm).</li>
+        <li data-i18n="instrucL4">Presiona <strong style="color:var(--accent)">Calcular</strong> para obtener la
+          angulación recomendada.</li>
+        <li data-i18n="instrucL5">Revise la investigación en el siguiente enlace: <a href="https://acortar.link/q2venz"
+            target="_blank" style="color:var(--accent); text-decoration:none;">Enlace</a></li>
       </ul>
-      <p style="margin-top:12px;font-size:0.8rem;">⚠️ Si la suma del ancho de pelvis + distancia mesa-receptor es 100,
-        ajuste los valores.</p>
-      <button class="modal-close" onclick="closeModal('instruc')">Entendido</button>
+      <p style="margin-top:12px;font-size:0.8rem;" data-i18n="instrucWarn">⚠️ Si la suma del ancho de pelvis + distancia
+        mesa-receptor es 100, ajuste los valores.</p>
+      <button class="modal-close" onclick="closeModal('instruc')" data-i18n="btnUnderstand">Entendido</button>
     </div>
   </div>
 
   <!-- MODAL CONTACTO -->
   <div class="overlay" id="overlayContacto">
     <div class="modal">
-      <h2>📧 Contacto</h2>
-      <p>Cualquier consulta o duda comunicarse con:</p>
+      <h2 data-i18n="modalContact">📧 Contacto</h2>
+      <p data-i18n="contactP1">Cualquier consulta o duda comunicarse con:</p>
       <div class="contact-line" style="margin-top:14px;">
         <a href="mailto:Claudio.Cuellar@uv.cl">Claudio.Cuellar@uv.cl</a><br />
         <a href="mailto:Cristian.Arellano@uv.cl">Cristian.Arellano@uv.cl</a>
       </div>
-      <button class="modal-close" onclick="closeModal('contacto')">Cerrar</button>
+      <button class="modal-close" onclick="closeModal('contacto')" data-i18n="btnClose">Cerrar</button>
     </div>
   </div>
 
   <script>
+    // ── Traducciones ──
+    const i18n = {
+      es: {
+        title: "5to Espacio Lumbar",
+        subtitle: "Calculadora de angulación del rayo central",
+        paramsTitle: "📐 Parámetros",
+        dciLabel: "Distancia entre crestas iliacas en la imagen radiográfica",
+        apLabel: "Ancho de la pelvis",
+        dmriLabel: "Distancia entre la mesa y el receptor de imagen",
+        btnClear: "🗑 Borrar",
+        btnCalc: "⚡ Calcular",
+        resultPlaceholder: "Ingresa los valores y presiona Calcular",
+        resultLabel: "Resultado",
+        modalMenu: "☰ Menú",
+        btnInstruc: "📋 Instrucciones",
+        btnContact: "📧 Contacto",
+        btnClose: "Cerrar",
+        modalInstruc: "📋 Instrucciones",
+        instrucP1: "Esta aplicación calcula la angulación óptima del rayo central para proyecciones del <strong style='color:var(--text)'>5to espacio lumbar (L5-S1)</strong>.",
+        instrucL1: "Ingresa la <strong style='color:var(--text)'>distancia entre crestas iliacas</strong> medida en la imagen radiográfica (cm).",
+        instrucL2: "Ingresa el <strong style='color:var(--text)'>ancho de la pelvis</strong> del paciente (cm).",
+        instrucL3: "Ingresa la <strong style='color:var(--text)'>distancia entre la mesa y el receptor</strong> de imagen (cm).",
+        instrucL4: "Presiona <strong style='color:var(--accent)'>Calcular</strong> para obtener la angulación recomendada.",
+        instrucL5: "Revise el papers en el siguiente enlace: <a href='https://acortar.link/q2venz' target='_blank' style='color:var(--accent); text-decoration:none;'>Enlace</a>",
+        instrucWarn: "⚠️ Si la suma del ancho de pelvis + distancia mesa-receptor es 100, ajuste los valores.",
+        btnUnderstand: "Entendido",
+        modalContact: "📧 Contacto",
+        contactP1: "Cualquier consulta o duda comunicarse con:",
+        footer: "Escuela de Tecnología Médica · Universidad de Valparaíso",
+        errEmpty: "⚠️ Todos los campos son obligatorios.",
+        errSpecial: "⚠️ Modifique la distancia entre la mesa y el receptor.",
+        resCraneal: "La angulación del rayo central es de {x}° a craneal",
+        resCaudal: "La angulación del rayo central es de {x}° a caudal",
+        resPerp: "Rayo central perpendicular"
+      },
+      en: {
+        title: "5th Lumbar Space",
+        subtitle: "Central ray angulation calculator",
+        paramsTitle: "📐 Parameters",
+        dciLabel: "Distance between iliac crests in the radiographic image",
+        apLabel: "Pelvis width",
+        dmriLabel: "Distance between table and image receptor",
+        btnClear: "🗑 Clear",
+        btnCalc: "⚡ Calculate",
+        resultPlaceholder: "Enter values and press Calculate",
+        resultLabel: "Result",
+        modalMenu: "☰ Menu",
+        btnInstruc: "📋 Instructions",
+        btnContact: "📧 Contact",
+        btnClose: "Close",
+        modalInstruc: "📋 Instructions",
+        instrucP1: "This app calculates the optimal central ray angulation for <strong style='color:var(--text)'>5th lumbar space (L5-S1)</strong> projections.",
+        instrucL1: "Enter the <strong style='color:var(--text)'>distance between iliac crests</strong> measured on the radiograph (cm).",
+        instrucL2: "Enter the patient's <strong style='color:var(--text)'>pelvis width</strong> (cm).",
+        instrucL3: "Enter the <strong style='color:var(--text)'>distance between table and image receptor</strong> (cm).",
+        instrucL4: "Press <strong style='color:var(--accent)'>Calculate</strong> to get the recommended angulation.",
+        instrucL5: "Check the papers at the following link: <a href='https://acortar.link/q2venz' target='_blank' style='color:var(--accent); text-decoration:none;'>Link</a>",
+        instrucWarn: "⚠️ If the sum of pelvis width + table-receptor distance is 100, adjust the values.",
+        btnUnderstand: "Understood",
+        modalContact: "📧 Contact",
+        contactP1: "For any questions or concerns, please contact:",
+        footer: "School of Medical Technology · University of Valparaíso",
+        errEmpty: "⚠️ All fields are required.",
+        errSpecial: "⚠️ Modify the distance between the table and the receptor.",
+        resCraneal: "The central ray angulation is {x}° cephalad",
+        resCaudal: "The central ray angulation is {x}° caudad",
+        resPerp: "Perpendicular central ray"
+      }
+    };
+
+    let currentLang = 'es';
+
+    function toggleLang() {
+      currentLang = currentLang === 'es' ? 'en' : 'es';
+      document.getElementById('langToggle').textContent = currentLang === 'es' ? 'EN' : 'ES';
+      document.documentElement.lang = currentLang;
+
+      // Actualizar todos los textos con data-i18n
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (i18n[currentLang][key]) {
+          el.innerHTML = i18n[currentLang][key];
+        }
+      });
+
+      // Si hay un resultado ya calculado, hay que re-escribirlo en el nuevo idioma
+      if (document.getElementById('btnCalc').disabled === true) {
+        const textEl = document.getElementById('resultText');
+        const txt = textEl.textContent;
+        // Sacamos el número del texto actual usando regex
+        const match = txt.match(/\\d+/);
+        if (match) {
+          const val = match[0];
+          if (textEl.classList.contains('craneal')) {
+            textEl.textContent = i18n[currentLang].resCraneal.replace('{x}', val);
+          } else if (textEl.classList.contains('caudal')) {
+            textEl.textContent = i18n[currentLang].resCaudal.replace('{x}', val);
+          }
+        } else if (textEl.classList.contains('perp')) {
+          textEl.textContent = i18n[currentLang].resPerp;
+        }
+      }
+    }
+
+
     // ── Modales ──
     function openModal(id) {
       document.getElementById('overlayMenu').classList.remove('show');
@@ -567,7 +697,11 @@
         if (v === '' || isNaN(v)) { el.classList.add('invalid'); ok = false; }
         else el.classList.remove('invalid');
       });
-      if (!ok) { showAlert('⚠️ Todos los campos son obligatorios.'); return; }
+
+      if (!ok) {
+        showAlert(i18n[currentLang].errEmpty);
+        return;
+      }
 
       const DCI = parseFloat(dciVal);
       const AP = parseFloat(apVal);
@@ -575,7 +709,7 @@
 
       // Validación especial
       if (Math.abs(AP + DMRI - 100) < 0.001) {
-        showAlert('⚠️ Modifique la distancia entre la mesa y el receptor.');
+        showAlert(i18n[currentLang].errSpecial);
         return;
       }
 
@@ -601,15 +735,15 @@
 
       if (Af < -1) {
         icon.textContent = '↑';
-        text.textContent = `La angulación del rayo central es de ${Math.abs(Af)}° a craneal`;
+        text.textContent = i18n[currentLang].resCraneal.replace('{x}', Math.abs(Af));
         text.classList.add('craneal');
       } else if (Af > 1) {
         icon.textContent = '↓';
-        text.textContent = `La angulación del rayo central es de ${Af}° a caudal`;
+        text.textContent = i18n[currentLang].resCaudal.replace('{x}', Af);
         text.classList.add('caudal');
       } else {
         icon.textContent = '✚';
-        text.textContent = 'Rayo central perpendicular';
+        text.textContent = i18n[currentLang].resPerp;
         text.classList.add('perp');
       }
     }
